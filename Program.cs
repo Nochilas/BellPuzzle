@@ -11,18 +11,15 @@ namespace BellPuzzle
             int attempts = 0;
             bool solved = false;
             
-            while(solved == false)
+            while(!solved && ticks > 0)
             {
                 answer = Convert.ToChar(Console.ReadLine());
-                bells = CheckAnswer(answer, bells);
+                CheckAnswer(answer, bells);
 
                 foreach(char c in bells) //Monitora il progresso sull'array bells
-                    {
-                        Console.Write($"{c} ");
-                    }
+                    Console.Write($"{c} ");
                 
-                    Console.WriteLine();
-
+                Console.WriteLine();
                 attempts++;
 
                 //Un Tick (warning) ogni 5 comandi
@@ -48,79 +45,72 @@ namespace BellPuzzle
                 Console.WriteLine("Il forziere si apre");
         }
 
-        static bool Check(char[] bells) //Controlla se bells è stato risolto (risolto = OOOO)
+        //Controlla se bells è stato risolto (risolto = OOOO)
+        static bool Check(char[] bells)
         {
-            int count = 0;
+            bool solved = true;
 
-            foreach(char c in bells)
-                if(c == 'O')
-                    count++;
-            
-            if(count == 4)
-                return true;
-            
-            return false;
-            
+            foreach(char bell in bells)
+                if(bell != 'O')
+                    solved = false;
+
+            return solved;
         }
 
-        static char[] CheckAnswer(char answer, char[] bells) //In base al comando suona una delle 4 campane
+        //In base al comando suona una delle 4 campane
+        static void CheckAnswer(char answer, char[] bells)
         {
             switch(answer)
             {
                 case '1':
                     RingFirstBell(bells);
-                    return bells;
-                    
+                    break;
 
                 case '2':
                     RingSecondBell(bells);
-                    return bells;
+                    break;
 
                 case '3':
                     RingThirdBell(bells);
-                    return bells;
+                    break;
 
                 case '4':
                     RingFourthBell(bells);
-                    return bells;
+                    break;
                 
                 default:
                     Console.WriteLine("Non succede nulla");
-                    return bells;
+                    break;
             }
         }
         
-        static char[] RingFirstBell(char[] bells) //Campana 1: oXXX
+        //Campana 1: oXXX
+        static void RingFirstBell(char[] bells)
         {
             for(int i = 1; i < bells.Length; i++)
                 bells[i] = CaseSwitch(bells[i]);
-            
-            return bells;
         }
 
-        static char[] RingSecondBell(char[] bells) //Campana 2: ooXX
+         //Campana 2: ooXX
+        static void RingSecondBell(char[] bells)
         {
             bells[2] = CaseSwitch(bells[2]);
             bells[3] = CaseSwitch(bells[3]);
-            
-            return bells;
         }
 
-        static char[] RingThirdBell(char[] bells) //Campana 3: XooX
+         //Campana 3: XooX
+        static void RingThirdBell(char[] bells)
         {
             bells[0] = CaseSwitch(bells[0]);
             bells[3] = CaseSwitch(bells[3]);
-            
-            return bells;
         }
 
-        static char[] RingFourthBell(char[] bells) //Campana 4: XoXX
+         //Campana 4: XoXX
+        static void RingFourthBell(char[] bells)
         {
             bells[0] = CaseSwitch(bells[0]);
             bells[2] = CaseSwitch(bells[2]);
             bells[3] = CaseSwitch(bells[3]);
-            
-            return bells;
         }
 
         static char CaseSwitch(char ch) //Cambia 'o' in 'O' e viceversa, a seconda della campana suonata
