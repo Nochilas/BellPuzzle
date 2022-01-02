@@ -34,7 +34,7 @@ namespace BellPuzzle
                         Console.Write("CRACK\n");
                         Console.WriteLine("La serratura si rompe");
                     }
-                        
+  
                 }
 
                 solved = Check(bells);
@@ -48,11 +48,15 @@ namespace BellPuzzle
         //Controlla se bells è stato risolto (risolto = OOOO)
         static bool Check(char[] bells)
         {
+            const char BELL_SOLVED = 'O';
             bool solved = true;
 
             foreach(char bell in bells)
-                if(bell != 'O')
+                if(bell != BELL_SOLVED)
+                {
                     solved = false;
+                    break;
+                }
 
             return solved;
         }
@@ -88,37 +92,37 @@ namespace BellPuzzle
         static void RingFirstBell(char[] bells)
         {
             for(int i = 1; i < bells.Length; i++)
-                bells[i] = CaseSwitch(bells[i]);
+                bells[i] = ToggleBell(bells[i]);
         }
 
          //Campana 2: ooXX
         static void RingSecondBell(char[] bells)
         {
-            bells[2] = CaseSwitch(bells[2]);
-            bells[3] = CaseSwitch(bells[3]);
+            bells[2] = ToggleBell(bells[2]);
+            bells[3] = ToggleBell(bells[3]);
         }
 
          //Campana 3: XooX
         static void RingThirdBell(char[] bells)
         {
-            bells[0] = CaseSwitch(bells[0]);
-            bells[3] = CaseSwitch(bells[3]);
+            bells[0] = ToggleBell(bells[0]);
+            bells[3] = ToggleBell(bells[3]);
         }
 
          //Campana 4: XoXX
         static void RingFourthBell(char[] bells)
         {
-            bells[0] = CaseSwitch(bells[0]);
-            bells[2] = CaseSwitch(bells[2]);
-            bells[3] = CaseSwitch(bells[3]);
+            bells[0] = ToggleBell(bells[0]);
+            bells[2] = ToggleBell(bells[2]);
+            bells[3] = ToggleBell(bells[3]);
         }
 
-        static char CaseSwitch(char ch) //Cambia 'o' in 'O' e viceversa, a seconda della campana suonata
+        static char ToggleBell(char ch) //Cambia 'o' in 'O' e viceversa, a seconda della campana suonata
         {
-            if(ch == 'o')
-                return 'O';
-            else
-                return 'o';
+            const char BELL_SOLVED = 'O';
+            const char BELL_UNSOLVED = 'o';
+            
+            return (ch == BELL_UNSOLVED) ? BELL_SOLVED : BELL_UNSOLVED;
         }
 
         static void Main(string[] args)
