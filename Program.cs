@@ -4,17 +4,24 @@ namespace BellPuzzle
 {
     class Program
     {
+        const char BELL_SOLVED = 'O';
+        const char BELL_UNSOLVED = 'o';
+
         static void Solve(char[] bells)
         {
             int answer;
             int ticks = 10; //Ticks = warnings (prima che la serratura si rompa)
             int attempts = 0;
             bool solved = false;
+            bool ansChecked;
             
             while(!solved && ticks > 0)
             {
                 answer = Convert.ToInt32(Console.ReadLine());
-                RingBell(bells, answer);
+                ansChecked = CheckAnswer(answer);
+
+                if(ansChecked)
+                    RingBell(bells, answer - 1);
 
                 foreach(char bell in bells) //Monitora il progresso sull'array bells
                     Console.Write($"{bell} ");
@@ -61,38 +68,10 @@ namespace BellPuzzle
             return solved;
         }
 
-        
-        //In base al comando suona una delle 4 campane
-        static void CheckAnswer(char[] bells, int answer)
+        //Restituisce un bool in base alla risposta
+        static bool CheckAnswer(int ans)
         {
-            while(answer < 0 || answer > 3)
-            {
-                Console.WriteLine("Attenzione, numero non valido");
-                answer = Convert.ToInt32(Console.ReadLine());
-            }
-
-            switch(answer)
-            {
-                case 1:
-                    RingBell(bells, answer-1);
-                    break;
-
-                case 2:
-                    RingBell(bells, answer-1);
-                    break;
-
-                case 3:
-                    RingBell(bells, answer-1);
-                    break;
-
-                case 4:
-                    RingBell(bells, answer-1);
-                    break;
-                
-                default:
-                    Console.WriteLine("Non succede nulla");
-                    break;
-            }
+            return (ans < 1 || ans > 4) ? false : true;
         }
 
         static void RingBell(char[] bells, int answer)
@@ -107,61 +86,22 @@ namespace BellPuzzle
                 for(int j = 0; j < bells_to_toggle[answer].Length; j++)
                     if(i == bells_to_toggle[answer][j])
                     {
-                        ToggleBell(bells[i]);
+                        bells[i] = ToggleBell(bells[i]);
                         break;
                     }
         }
-        
-        /*
-        //Campana 1: oXXX
-        static void RingFirstBell(char[] bells)
-        {
-            bells[1] = ToggleBell(bells[1]);
-            bells[2] = ToggleBell(bells[2]);
-            bells[3] = ToggleBell(bells[3]);
-        }
-
-         //Campana 2: ooXX
-        static void RingSecondBell(char[] bells)
-        {
-            bells[2] = ToggleBell(bells[2]);
-            bells[3] = ToggleBell(bells[3]);
-        }
-
-         //Campana 3: XooX
-        static void RingThirdBell(char[] bells)
-        {
-            bells[0] = ToggleBell(bells[0]);
-            bells[3] = ToggleBell(bells[3]);
-        }
-
-         //Campana 4: XoXX
-        static void RingFourthBell(char[] bells)
-        {
-            bells[0] = ToggleBell(bells[0]);
-            bells[2] = ToggleBell(bells[2]);
-            bells[3] = ToggleBell(bells[3]);
-        }*/
 
         static char ToggleBell(char ch) //Cambia 'o' in 'O' e viceversa, a seconda della campana suonata
         {
-            const char BELL_SOLVED = 'O';
-            const char BELL_UNSOLVED = 'o';
-            
             return (ch == BELL_UNSOLVED) ? BELL_SOLVED : BELL_UNSOLVED;
         }
 
         static void Main(string[] args)
         {
-            const char BELL_UNSOLVED = 'o';
-            int length;
+            const int LENGTH = 4;
+            char[] bells = new char[LENGTH];
 
-            Console.WriteLine("Insert n. bells");
-            length = Convert.ToInt32(Console.ReadLine());
-
-            char[] bells = new char[length];
-
-            for(int i = 0; i < length; i++)
+            for(int i = 0; i < LENGTH; i++)
                 bells[i] = BELL_UNSOLVED;
 
             Solve(bells);
