@@ -35,36 +35,35 @@ namespace BellPuzzle
                         Console.WriteLine("Valore non valido");
                 }
                     
-                foreach(char bell in bells) //Monitora il progresso sull'array bells
+                foreach(char bell in bells) //Checking progress on bells array
                     Console.Write($"{bell} ");
                 
                 Console.WriteLine();
                 attempts++;
 
-                //Un Tick (warning) ogni 5 comandi
+                //A Tick (warning) every 5 attempts
                 if(attempts % 5 == 0)
                 {
                     ticks--;
                     Console.WriteLine("Tick");
 
-                //Se dopo 50 comandi diversi non si è risolto il puzzle, la serratura si rompe
-                    if(ticks == 0)
+                //Lock breaks after 50 attempts
+                    if(ticks == 0 && !solved)
                     {
                         Console.WriteLine("CRACK");
-                        Console.WriteLine("La serratura si rompe");
+                        Console.WriteLine("The lock breaks");
                     }
-  
                 }
 
                 solved = Check(bells);
             }
 
-            //Se l'array bells è stato trasformato in OOOO, il forziere si apre
+            //If bells array is solved (= OOOO) the chest is unlocked
             if(solved == true)
-                Console.WriteLine("Il forziere si apre");
+                Console.WriteLine("The chest is unlocked");
         }
 
-        //Controlla se bells è stato risolto (risolto = OOOO)
+        //Checks if bells is solved (solved = OOOO)
         static bool Check(char[] bells)
         {
             bool solved = true;
@@ -79,7 +78,7 @@ namespace BellPuzzle
             return solved;
         }
 
-        //Restituisce un bool in base alla risposta
+        //Checks the answer and returns a bool
         static bool CheckAnswer(int ans)
         {
             return (ans < 1 || ans > 4) ? false : true;
@@ -87,7 +86,7 @@ namespace BellPuzzle
 
         static void RingBell(char[] bells, int answer)
         {
-            /* Da sistemare
+            /* TODO: Fix
             for(int i = 0; i < bells.Length; i++)
                 for(int j = 0; j < bells_to_toggle[answer].Length; j++)
                     if(i == bells_to_toggle[answer][j])
@@ -97,7 +96,8 @@ namespace BellPuzzle
                     }*/
         }
 
-        static char ToggleBell(char ch) //Cambia 'o' in 'O' e viceversa, a seconda della campana suonata
+        //Changes 'o' in 'O' and vice versa
+        static char ToggleBell(char ch)
         {
             return (ch == BELL_UNSOLVED) ? BELL_SOLVED : BELL_UNSOLVED;
         }
@@ -107,7 +107,7 @@ namespace BellPuzzle
             int length;
             Console.WriteLine("Insert n. bells");
 
-            /*
+            /* TODO: fix
             bells_to_toggle[0] = new int[] {1, 2, 3};
             bells_to_toggle[1] = new int[] {2, 3};
             bells_to_toggle[2] = new int[] {0, 3};
